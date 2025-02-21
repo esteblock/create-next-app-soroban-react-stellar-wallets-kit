@@ -42,12 +42,6 @@ export default function SorobanReactConnector({ walletName }: SorobanReactConnec
     
           <div className="flex flex-col items-center space-y-4 p-4 border border-gray-300 rounded-lg">
             <h2 className="text-lg font-bold">{walletName}</h2>
-            <button
-              onClick={handleClick}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-            >
-              Connect {walletName}
-            </button>
             {/* ✅ Centered and styled wallet address */}
             {walletAddress && (
               <div className="bg-green-100 text-green-700 p-3 rounded-md w-full max-w-xs text-center">

@@ -6,26 +6,15 @@ import type { WalletChain } from "@soroban-react/types";
 
 export const ConnectButton = () => {
   const sorobanContext = useSorobanReact();
-  const { activeChain, address, disconnect, setActiveConnectorAndConnect, setActiveChain } = sorobanContext;
+  const { activeChain, address, disconnect, setActiveConnectorAndConnect, setActiveChain } =
+    sorobanContext;
   const activeAccount = address;
   const browserWallets = sorobanContext.connectors;
-  const supportedChains = sorobanContext.chains;
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleContractInteraction = (chain: WalletChain) => {
-    if (!chain.name || chain.name.toLowerCase() === "standalone") {
-      console.log("Please deploy the contract before proceeding.");
-      alert("Please deploy the contract before proceeding.");
-    } else {
-      setActiveChain && setActiveChain(chain);
-      console.log(`Active chain changed to ${chain.name}`);
-      alert(`Active chain changed to ${chain.name}`);
-    }
-  };
 
   if (!activeAccount)
     return (
-      <div className="relative inline-block">
+      <div className="relative flex flex-col items-center">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="px-6 py-2 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700"
@@ -53,16 +42,12 @@ export const ConnectButton = () => {
     );
 
   return (
-    <div className="relative inline-block">
+    <div className="relative flex flex-col items-center">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="px-6 py-2 bg-gray-800 text-white font-bold rounded-lg flex items-center justify-between"
+        className="px-6 py-2 bg-gray-800 text-white font-bold rounded-lg"
       >
-        <div className="flex flex-col">
-          <span className="text-sm">{activeChain?.name}</span>
-          <span className="text-xs opacity-75">{address}</span>
-        </div>
-        <span className="ml-2">▼</span>
+        <span className="text-sm">{activeChain?.name || "Unknown Chain"}</span>
       </button>
 
       {isOpen && (
@@ -80,6 +65,14 @@ export const ConnectButton = () => {
           </button>
         </div>
       )}
+
+      {/* ✅ Address Box - Now properly contained inside the column */}
+      {activeAccount && (
+        <div className="mt-4 w-full max-w-xs bg-green-100 text-green-700 p-3 rounded-md text-center">
+          <p className="text-sm font-medium">Your Address:</p>
+          <p className="text-xs break-all">{address}</p>
+        </div>
+      )}
     </div>
   );
-};
+}
