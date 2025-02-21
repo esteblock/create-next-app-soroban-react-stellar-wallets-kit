@@ -1,6 +1,42 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
+
+import {
+  StellarWalletsKit,
+  WalletNetwork,
+  allowAllModules,
+  XBULL_ID,
+  ISupportedWallet
+} from '@creit.tech/stellar-wallets-kit';
+
+const kit: StellarWalletsKit = new StellarWalletsKit({
+  network: WalletNetwork.TESTNET,
+  selectedWalletId: XBULL_ID,
+  modules: allowAllModules(),
+});
 
 export default function Home() {
+
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+
+
+  async function handleClick() {
+    try {
+      await kit.openModal({
+        onWalletSelected: async (option: ISupportedWallet) => {
+          kit.setWallet(option.id);
+          const { address } = await kit.getAddress();
+          setWalletAddress(address); // ✅ Store the wallet address in state
+          console.log("🚀 ~ onWalletSelected: ~ address:", address)
+        },
+      });
+    } catch (error) {
+      console.error("Error opening wallet modal:", error);
+    }
+  }
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
@@ -22,6 +58,21 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
+
+        {/* ✅ New button to handle click */}
+        <button
+          onClick={handleClick}
+          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          Connect Wallet
+        </button>
+
+        {/* ✅ Show wallet address if connected */}
+        {walletAddress && (
+          <p className="text-green-500 mt-4">
+            Connected Wallet: {walletAddress}
+          </p>
+        )}
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
