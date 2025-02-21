@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { useState } from "react";
 import StellarWalletsKitConnector from "./components/StellarWalletsKitConnector";
-// Ensure the file exists at the specified path
-// If the path is incorrect, update it to the correct path
 
+import MySorobanReactProvider from "./components/MySorobanReactProvider"
+import SorobanReactConnector from "./components/SorobanReactConnector";
 
 
 export default function Home() {
@@ -17,7 +17,9 @@ export default function Home() {
       {/* ✅ Two Wallet Instances in Two Columns */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full max-w-2xl">
         <StellarWalletsKitConnector walletName="Wallet A" />
-        <StellarWalletsKitConnector walletName="Wallet B" />
+        <MySorobanReactProvider>
+          <SorobanReactConnector walletName="Wallet B" />
+        </MySorobanReactProvider>
       </div>
     </div>
   );
