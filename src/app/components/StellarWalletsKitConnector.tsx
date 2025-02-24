@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   StellarWalletsKit,
   WalletNetwork,
@@ -32,63 +32,51 @@ export default function StellarWalletsKitConnector({ walletName }: StellarWallet
           kit.setWallet(option.id);
           const { address } = await kit.getAddress();
           const { network } = await kit.getNetwork();
-          console.log("🚀 ~ onWalletSelected: ~ network:", network)
+          console.log("🚀 ~ onWalletSelected: ~ network:", network);
           setWalletAddress(address);
           setCurrentNetwork(network);
         },
       });
     } catch (error) {
-        console.error(`Error connecting ${walletName}:`, error);
+      console.error(`Error connecting ${walletName}:`, error);
     }
   }
 
   async function handleDisconnect() {
     try {
-        await kit.disconnect();        
-        setWalletAddress(null);
-        setIsMenuOpen(false);
-        console.log("Disconnected from wallet.");
-    }
-    catch (error) {
-        console.error(`Error disconnecting ${walletName}:`, error);
+      await kit.disconnect();
+      setWalletAddress(null);
+      setIsMenuOpen(false);
+      console.log("Disconnected from wallet.");
+    } catch (error) {
+      console.error(`Error disconnecting ${walletName}:`, error);
     }
   }
 
   return (
-    <div className="flex flex-col items-center space-y-4 p-4 border border-gray-300 rounded-lg">
-      <h2 className="text-lg font-bold">{walletName}</h2>
+    <div className="connector-container">
+      <h2 className="connector-title">{walletName}</h2>
 
       {!walletAddress ? (
-        <button
-          onClick={handleClick}
-          className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
-        >
+        <button onClick={handleClick} className="button button-primary">
           Connect {walletName}
         </button>
       ) : (
         <div className="relative flex flex-col items-center">
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="px-6 py-2 bg-gray-800 text-white font-bold rounded-lg"
-          >
-            <span className="text-sm">
-              {currentNetwork }
-            </span>
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="button button-secondary">
+            <span className="text-sm">{currentNetwork}</span>
           </button>
 
           {isMenuOpen && (
-            <div className="absolute mt-2 w-48 bg-black border border-gray-700 rounded-md shadow-lg">
-              <button
-                onClick={handleDisconnect}
-                className="block w-full px-4 py-2 text-left text-red-400 hover:bg-gray-800"
-              >
+            <div className="dropdown">
+              <button onClick={handleDisconnect} className="dropdown-item-danger">
                 Disconnect
               </button>
             </div>
           )}
 
           {/* ✅ Display Wallet Address */}
-          <div className="mt-4 w-full max-w-xs bg-green-100 text-green-700 p-3 rounded-md text-center">
+          <div className="address-box">
             <p className="text-sm font-medium">Your Address:</p>
             <p className="text-xs break-all">{walletAddress}</p>
           </div>

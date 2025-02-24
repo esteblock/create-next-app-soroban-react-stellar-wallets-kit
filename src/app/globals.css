@@ -19,3 +19,44 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 🔹 Button Styles */
+.button {
+  @apply px-6 py-2 font-bold rounded-lg;
+}
+
+.button-primary {
+  @apply bg-blue-500 text-white hover:bg-blue-700 transition;
+}
+
+.button-secondary {
+  @apply bg-gray-800 text-white;
+}
+
+/* 🔹 Dropdown Styles */
+.dropdown {
+  @apply absolute mt-2 w-48 bg-black border border-gray-700 rounded-md shadow-lg;
+}
+
+.dropdown-item {
+  @apply block w-full px-4 py-2 text-left text-white hover:bg-gray-800;
+}
+
+.dropdown-item-danger {
+  @apply block w-full px-4 py-2 text-left text-red-400 hover:bg-gray-800;
+}
+
+/* 🔹 Address Box */
+.address-box {
+  @apply mt-4 w-full max-w-xs bg-green-100 text-green-700 p-3 rounded-md text-center;
+}
+
+/* 🔹 Container for Wallet Connector */
+.connector-container {
+  @apply flex flex-col items-center space-y-4 p-4 border border-gray-300 rounded-lg;
+}
+
+/* 🔹 Title Styling */
+.connector-title {
+  @apply text-lg font-bold;
+}
