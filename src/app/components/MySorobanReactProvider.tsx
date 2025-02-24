@@ -1,26 +1,20 @@
 import React from 'react'
-import {SorobanReactProvider} from '@soroban-react/core';
-import {futurenet, sandbox, standalone, testnet} from '@soroban-react/chains';
-import {freighter} from '@soroban-react/freighter';
-import type {ChainMetadata, Connector} from "@soroban-react/types";
-import { xbull } from '@soroban-react/xbull';
-import { hana } from '@soroban-react/hana';
-import { lobstr } from '@soroban-react/lobstr';
-
+import {SorobanReactProvider, NetworkDetails, WalletNetwork} from '@soroban-react/core';
 import deployments from '../deployments.json';
-
-const chains: ChainMetadata[] = [sandbox, standalone, futurenet,testnet];
-const connectors: Connector[] = [freighter(), xbull(), hana(), lobstr()];
-
 
 export default function MySorobanReactProvider({children}:{children: React.ReactNode}) { 
 
+  const testnetNetworkDetails : NetworkDetails = {
+    network: WalletNetwork.TESTNET,
+    sorobanRpcUrl: 'https://soroban-testnet.stellar.org/',
+    horizonRpcUrl: 'https://horizon-testnet.stellar.org'
+  }
+
     return (
       <SorobanReactProvider
-        chains={chains}
         appName={"Example Stellar App"}
-        activeChain={testnet}
-        connectors={connectors}
+        allowedNetworkDetails={[testnetNetworkDetails]}
+        activeNetwork={WalletNetwork.TESTNET}
         deployments={deployments}>
           {children}
       </SorobanReactProvider>

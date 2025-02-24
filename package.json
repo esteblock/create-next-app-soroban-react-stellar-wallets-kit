@@ -12,7 +12,6 @@
     "@creit.tech/stellar-wallets-kit": "^1.6.0",
     "@soroban-react/chains": "^9.1.13",
     "@soroban-react/contracts": "^9.3.0",
-    "@soroban-react/core": "^9.3.0",
     "@soroban-react/freighter": "^9.1.13",
     "@soroban-react/hana": "^9.1.13",
     "@soroban-react/lobstr": "^9.1.13",

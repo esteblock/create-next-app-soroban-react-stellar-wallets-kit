@@ -16,7 +16,6 @@ export default function Home() {
 
       {/* ✅ Two Wallet Instances in Two Columns */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full max-w-2xl">
-        <StellarWalletsKitConnector walletName="Stellar Wallets Kit" />
         <MySorobanReactProvider>
           <SorobanReactConnector walletName="@soroban-react" />
         </MySorobanReactProvider>
