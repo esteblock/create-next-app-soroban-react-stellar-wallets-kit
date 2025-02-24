@@ -11,6 +11,7 @@
   "dependencies": {
     "@creit.tech/stellar-wallets-kit": "^1.6.0",
     "@soroban-react/chains": "^9.1.13",
+    "@soroban-react/contracts": "^9.3.0",
     "@soroban-react/core": "^9.3.0",
     "@soroban-react/freighter": "^9.1.13",
     "@soroban-react/hana": "^9.1.13",
@@ -19,7 +20,9 @@
     "@soroban-react/xbull": "^9.3.0",
     "next": "15.1.7",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
+    "react-hot-toast": "^2.5.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

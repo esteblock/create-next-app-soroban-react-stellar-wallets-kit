@@ -5,13 +5,15 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --border-color: #d1d5db;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
-  }
+    --border-color: #374151;
+}
 }
 
 body {
@@ -22,15 +24,19 @@ body {
 
 /* 🔹 Button Styles */
 .button {
-  @apply px-6 py-2 font-bold rounded-lg;
+  @apply px-6 py-2 font-bold rounded-lg transition;
 }
 
 .button-primary {
-  @apply bg-blue-500 text-white hover:bg-blue-700 transition;
+  @apply bg-purple-600 text-white hover:bg-purple-700;
 }
 
 .button-secondary {
   @apply bg-gray-800 text-white;
+}
+
+.button-disabled {
+  @apply bg-gray-400 text-white cursor-not-allowed;
 }
 
 /* 🔹 Dropdown Styles */
@@ -51,7 +57,7 @@ body {
   @apply mt-4 w-full max-w-xs bg-green-100 text-green-700 p-3 rounded-md text-center;
 }
 
-/* 🔹 Container for Wallet Connector */
+/* 🔹 Wallet Connector Container */
 .connector-container {
   @apply flex flex-col items-center space-y-4 p-4 border border-gray-300 rounded-lg;
 }
@@ -59,4 +65,31 @@ body {
 /* 🔹 Title Styling */
 .connector-title {
   @apply text-lg font-bold;
+}
+
+/* 🔹 Form Styling */
+.input {
+  @apply w-full px-3 py-2 border rounded-md focus:ring focus:ring-purple-300 focus:outline-none;
+}
+
+.input-disabled {
+  @apply w-full px-3 py-2 border rounded-md bg-gray-200 cursor-not-allowed;
+}
+
+/* 🔹 Card Styling (Now Using Site Background) */
+.card {
+  @apply p-4 border rounded-lg shadow-md;
+  background-color: var(--background);
+  border-color: var(--border-color);
+}
+
+/* 🔹 Stack (Row Layout) */
+.stack {
+  @apply flex flex-row space-x-2 items-end;
+}
+
+/* 🔹 Link Styling */
+.contract-link {
+  @apply font-mono text-xs underline;
+  color: var(--foreground);
 }

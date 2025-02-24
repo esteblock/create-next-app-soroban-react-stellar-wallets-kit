@@ -8,6 +8,7 @@ import { xbull } from "@soroban-react/xbull";
 import { hana } from "@soroban-react/hana";
 import { lobstr } from "@soroban-react/lobstr";
 import type { ChainMetadata, Connector } from "@soroban-react/types";
+import { GreeterContractInteractions } from "./GreeterContractInteractions";
 
 import { ConnectButton } from "./ConnectButton";
 
@@ -45,6 +46,9 @@ export default function SorobanReactConnector({ walletName }: SorobanReactConnec
       )}
 
       <ConnectButton />
+      
+      {/* ✅ Display Contract Interactions */}
+      <GreeterContractInteractions />
     </div>
   );
 }
