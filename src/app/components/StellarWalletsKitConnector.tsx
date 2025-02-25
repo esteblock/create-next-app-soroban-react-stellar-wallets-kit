@@ -15,12 +15,13 @@ interface StellarWalletsKitConnectorProps {
 
 export default function StellarWalletsKitConnector({ walletName }: StellarWalletsKitConnectorProps) {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [currentNetwork, setCurrentNetwork] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const currentNetwork = WalletNetwork.TESTNET;
 
   // ✅ Create an instance of StellarWalletsKit
   const kit: StellarWalletsKit = new StellarWalletsKit({
-    network: WalletNetwork.TESTNET, // Default to TESTNET
+    network: currentNetwork, // Default to TESTNET
     selectedWalletId: XBULL_ID,
     modules: allowAllModules(),
   });
@@ -31,10 +32,7 @@ export default function StellarWalletsKitConnector({ walletName }: StellarWallet
         onWalletSelected: async (option: ISupportedWallet) => {
           kit.setWallet(option.id);
           const { address } = await kit.getAddress();
-          const { network } = await kit.getNetwork();
-          console.log("🚀 ~ onWalletSelected: ~ network:", network);
           setWalletAddress(address);
-          setCurrentNetwork(network);
         },
       });
     } catch (error) {
