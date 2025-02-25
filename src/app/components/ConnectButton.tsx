@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSorobanReact } from "@soroban-react/core";
+import { useSorobanReact } from "soroban-react-stellar-wallets-kit";
 
 export const ConnectButton = () => {
   const sorobanContext = useSorobanReact();
@@ -29,8 +29,8 @@ export const ConnectButton = () => {
             onClick={async () => {
               console.log("Disconnecting...");
               await disconnect();
-              alert("Disconnected successfully.");
               setIsOpen(false);
+              console.log("Disconnected successfully.");
             }}
             className="dropdown-item-danger"
           >

@@ -1,8 +1,8 @@
 [
   {
     "contractId": "greeting",
-    "networkPassphrase": "Standalone Network ; February 2017",
-    "contractAddress": "CAQEPQ5ZX3CUQPZP47YBPR3J5LUOER44TC5WWMCV2K42X5AAWAU4DKNG"
+    "networkPassphrase": "Public Global Stellar Network ; September 2015",
+    "contractAddress": "CARQW3QB7JC5DKKCS3GKZPWOUFW4RFSAES6OXN7MWH6CCU4Q7ITOICVA"
   },
   {
     "contractId": "greeting",

@@ -1,7 +1,7 @@
 "use client"; // ✅ Makes this a Client Component
 import { useState } from "react";
 import React from "react";
-import { useSorobanReact } from "@soroban-react/core";
+import { useSorobanReact } from "soroban-react-stellar-wallets-kit";
 import { testnet } from "@soroban-react/chains";
 import { freighter } from "@soroban-react/freighter";
 import { xbull } from "@soroban-react/xbull";

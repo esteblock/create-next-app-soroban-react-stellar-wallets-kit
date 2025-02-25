@@ -3,41 +3,39 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Link from "next/link";
 
-import { useSorobanReact } from "@soroban-react/core";
-import { useRegisteredContract } from "@soroban-react/contracts";
+import { useSorobanReact } from "soroban-react-stellar-wallets-kit";
+import { useRegisteredContract } from "soroban-react-stellar-wallets-kit";
 import { xdr, nativeToScVal, scValToNative } from "@stellar/stellar-sdk";
 
 type UpdateGreetingValues = { newMessage: string };
 
 export const GreeterContractInteractions = () => {
   const sorobanContext = useSorobanReact();
-  const { activeChain, server, address } = sorobanContext;
+  const { activeNetwork , sorobanServer, address } = sorobanContext;
   const contract = useRegisteredContract("greeting");
-
+  
   const [updateIsLoading, setUpdateIsLoading] = useState(false);
   const { register, handleSubmit } = useForm<UpdateGreetingValues>();
 
   const [fetchedGreeting, setFetchedGreeting] = useState<string | null>(null);
   const [contractAddress, setContractAddress] = useState<string | null>(null);
-  const [currentChain, setCurrentChain] = useState<string | null>(null);
 
   /** 🔹 Fetch Greeting from Contract */
   const fetchGreeting = useCallback(async () => {
-    if (!server || !contract) return;
+    console.log("🚀 ~ fetchGreeting ~ sorobanServer:", sorobanServer)
+    console.log("🚀 ~ fetchGreeting ~ contract:", contract)
+    if (!sorobanServer || !contract) return;
+    console.log("here again")
 
-    const chainName = activeChain?.name?.toLowerCase() || null;
-    setCurrentChain(chainName);
-
-    if (!chainName) {
-      toast.error("Wallet not connected. Try again…");
-      return;
-    }
 
     try {
       const address = contract?.deploymentInfo?.contractAddress;
+      console.log("🚀 ~ fetchGreeting ~ address:", address)
       setContractAddress(address);
 
-      const result = await contract?.invoke({ method: "read_title", args: [] });
+      const result = await contract?.invoke(
+        { method: "read_title", args: [] });
+      console.log("🚀 ~ fetchGreeting ~ result:", result)
       if (result) {
         setFetchedGreeting(scValToNative(result as xdr.ScVal) as string);
       }
@@ -46,7 +44,7 @@ export const GreeterContractInteractions = () => {
       toast.error("Error while fetching greeting. Try again…");
       setFetchedGreeting(null);
     }
-  }, [server, contract, activeChain]);
+  }, [sorobanServer, contract, activeNetwork]);
 
   /** 🔹 Fetch greeting when the component mounts or updates */
   useEffect(() => {
@@ -56,9 +54,12 @@ export const GreeterContractInteractions = () => {
 
   /** 🔹 Update Greeting */
   const updateGreeting = async ({ newMessage }: UpdateGreetingValues) => {
+    console.log("🚀 ~ updateGreeting ~ newMessage:", newMessage)
+    console.log("🚀 ~ updateGreeting ~ address:", address)
+    console.log("🚀 ~ updateGreeting ~ sorobanServer:", sorobanServer)
     if (!address) return toast.error("Wallet is not connected. Try again...");
-    if (!server) return toast.error("Server is not defined. Unable to connect to the blockchain");
-    if (!activeChain?.name) return toast.error("Wallet not connected. Try again…");
+    if (!sorobanServer) return toast.error("sorobanServer is not defined. Unable to connect to the blockchain");
+    if (!activeNetwork) return toast.error("Wallet not connected. Try again…");
 
     setUpdateIsLoading(true);
     try {
@@ -66,6 +67,7 @@ export const GreeterContractInteractions = () => {
         method: "set_title",
         args: [nativeToScVal(newMessage, { type: "string" })],
         signAndSend: true,
+        reconnectAfterTx: false,
       });
 
       if (result) {
@@ -81,7 +83,7 @@ export const GreeterContractInteractions = () => {
       setUpdateIsLoading(false);
     }
   };
-
+  
   return (
     <div className="flex flex-col space-y-4 max-w-[20rem]">
       <h2 className="text-center">Greeter Smart Contract</h2>
@@ -127,7 +129,7 @@ export const GreeterContractInteractions = () => {
     </div>
       }
 
-      {currentChain && <p className="text-center">Current Chain: {currentChain}</p>}
+      {activeNetwork && <p className="text-center">Current Chain: {activeNetwork}</p>}
     </div>
   );
 };
