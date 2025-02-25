@@ -23,7 +23,9 @@ export const ConnectButton = () => {
               <button
                 key={w.name}
                 onClick={() => {
-                  setActiveConnectorAndConnect && setActiveConnectorAndConnect(w);
+                  if (setActiveConnectorAndConnect) {
+                    setActiveConnectorAndConnect(w);
+                  }
                   setIsOpen(false);
                 }}
                 className="dropdown-item"

@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
 import StellarWalletsKitConnector from "./components/StellarWalletsKitConnector";
 
 import MySorobanReactProvider from "./components/MySorobanReactProvider"

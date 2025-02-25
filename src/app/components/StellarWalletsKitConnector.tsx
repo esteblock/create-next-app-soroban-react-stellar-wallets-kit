@@ -15,7 +15,7 @@ interface StellarWalletsKitConnectorProps {
 
 export default function StellarWalletsKitConnector({ walletName }: StellarWalletsKitConnectorProps) {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
-  const [currentNetwork, setCurrentNetwork] = useState<any | null>(null);
+  const [currentNetwork, setCurrentNetwork] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // ✅ Create an instance of StellarWalletsKit
