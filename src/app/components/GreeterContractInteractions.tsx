@@ -2,11 +2,12 @@ import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { useSorobanReact, useRegisteredContract } from "soroban-react-stellar-wallets-kit";
+import { useSorobanReact, useRegisteredContract, WalletNetwork } from "soroban-react-stellar-wallets-kit";
 import { xdr, nativeToScVal, scValToNative } from "@stellar/stellar-sdk";
 
 export const GreeterContractInteractions = () => {
   const { activeNetwork, sorobanServer, address } = useSorobanReact();
+  const isMainnet = activeNetwork === WalletNetwork.PUBLIC;
   const contract = useRegisteredContract("greeting");
 
   const [updateIsLoading, setUpdateIsLoading] = useState(false);
@@ -46,6 +47,7 @@ export const GreeterContractInteractions = () => {
         method: "set_title",
         args: [nativeToScVal(newMessage, { type: "string" })],
         signAndSend: true,
+        reconnectAfterTx: false
       });
 
       if (result) {
@@ -71,7 +73,19 @@ export const GreeterContractInteractions = () => {
             <p className="font-semibold text-white">Fetched Greeting:</p>
             <p className="text-white">{fetchedGreeting || "Loading..."}</p>
           </div>
-          <Link href={`https://stellar.expert/explorer/testnet/contract/${contractAddress}`} target="_blank" className="contract-link mt-2 block text-white">
+        </>
+      ) : (
+        <p className="text-white mt-2">Loading Smart Contract...</p>
+      )}
+
+      {contractAddress ? (
+        <>
+          <p className="font-semibold text-white mt-4">Contract Address:</p>
+          <Link
+            href={`https://stellar.expert/explorer/${isMainnet ? "public" : "testnet"}/contract/${contractAddress}`}
+            target="_blank"
+            className="contract-link mt-2 block text-white"
+          >
             {contractAddress}
           </Link>
         </>
@@ -88,8 +102,6 @@ export const GreeterContractInteractions = () => {
           </button>
         </form>
       )}
-
-      {activeNetwork && <p className="text-white text-sm mt-2">Current Chain: {activeNetwork}</p>}
     </div>
   );
 };
