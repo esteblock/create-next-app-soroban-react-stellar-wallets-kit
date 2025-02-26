@@ -39,6 +39,15 @@ export default function StellarWalletsKitConnector({ walletName }: StellarWallet
       console.error(`Error connecting ${walletName}:`, error);
     }
   }
+  async function handleGetAddressClick() {
+    try {
+      const { address } = await kit.getAddress();
+      console.log("🚀 ~ handleGetAddressClick ~ address:", address)
+      setWalletAddress(address);
+    } catch (error) {
+      console.error(`Error getting address:`, error);
+    }
+  }
 
   async function handleDisconnect() {
     try {
@@ -78,6 +87,9 @@ export default function StellarWalletsKitConnector({ walletName }: StellarWallet
             <p className="text-sm font-medium">Your Address:</p>
             <p className="text-xs break-all">{walletAddress}</p>
           </div>
+          <button onClick={handleGetAddressClick} className="button button-primary">
+          Get Address from Wallet Again
+        </button>
         </div>
       )}
     </div>
