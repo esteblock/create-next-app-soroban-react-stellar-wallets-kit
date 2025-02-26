@@ -1,5 +1,9 @@
 import React from 'react'
-import {SorobanReactProvider, NetworkDetails, WalletNetwork} from 'soroban-react-stellar-wallets-kit';
+import {
+  SorobanReactProvider, 
+  NetworkDetails, 
+  WalletNetwork
+} from 'soroban-react-stellar-wallets-kit';
 import deployments from '../deployments.json';
 
 export default function MySorobanReactProvider({children}:{children: React.ReactNode}) { 

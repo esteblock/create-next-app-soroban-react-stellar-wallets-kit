@@ -1,12 +1,9 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import StellarWalletsKitConnector from "./components/StellarWalletsKitConnector";
-
 import MySorobanReactProvider from "./components/MySorobanReactProvider"
-import SorobanReactConnector from "./components/SorobanReactConnector";
-
+import { WalletInfo } from "./components/WalletInfo";
+import { ConnectButton } from "./components/ConnectButton";
+import { GreeterContractInteractions } from "./components/GreeterContractInteractions";
 
 export default function Home() {
 
@@ -17,7 +14,9 @@ export default function Home() {
       {/* ✅ Two Wallet Instances in Two Columns */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full max-w-2xl">
         <MySorobanReactProvider>
-          <SorobanReactConnector walletName="@soroban-react" />
+          <WalletInfo />
+          <ConnectButton/>
+          <GreeterContractInteractions/>
         </MySorobanReactProvider>
       </div>
     </div>
