@@ -1,50 +1,30 @@
 "use client";
-
 import { useState } from "react";
 import { useSorobanReact } from "soroban-react-stellar-wallets-kit";
 
 export const ConnectButton = () => {
-  const sorobanContext = useSorobanReact();
-  const { activeNetwork, address, disconnect, connect } = sorobanContext;
+  const { activeNetwork, address, disconnect, connect } = useSorobanReact();
   const [isOpen, setIsOpen] = useState(false);
 
-  if (!address)
-    return (
-      <div className="relative flex flex-col items-center">        <button onClick={() => connect()} className="button button-primary">
-          Connect Wallet
-        </button>
-      </div>
-    );
-
-  return (
-    <div className="relative flex flex-col items-center">
-
-      <button onClick={() => setIsOpen(!isOpen)} className="button button-secondary">
-        <span className="text-sm">{activeNetwork || "Unknown Chain"}</span>
+  return !address ? (
+    <button onClick={connect} className="button button-primary w-full">
+      Connect Wallet
+    </button>
+  ) : (
+    <div className="relative w-full">
+      <button onClick={() => setIsOpen(!isOpen)} className="button button-secondary w-full">
+        {activeNetwork || "Unknown Chain"}
       </button>
 
       {isOpen && (
-        <div className="dropdown">
-          <button
-            onClick={async () => {
-              console.log("Disconnecting...");
-              await disconnect();
-              setIsOpen(false);
-              console.log("Disconnected successfully.");
-            }}
-            className="dropdown-item-danger"
-          >
+        <div className="dropdown w-full">
+          <button onClick={disconnect} className="dropdown-item-danger">
             Disconnect
           </button>
         </div>
       )}
 
-      {address && (
-        <div className="address-box">
-          <p className="text-sm font-medium">Your Address:</p>
-          <p className="text-xs break-all">{address}</p>
-        </div>
-      )}
+      <p className="address-box">{address}</p>
     </div>
   );
 };

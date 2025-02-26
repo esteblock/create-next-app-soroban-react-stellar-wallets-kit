@@ -2,20 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🔹 Default Dark Mode */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --border-color: #d1d5db;
+  --background: #0a0a0a;  /* Dark Background */
+  --foreground: #ededed;  /* Light Text */
+  --border-color: #374151; /* Darker Borders */
 }
 
-@media (prefers-color-scheme: dark) {
+/* 🔹 Override for Light Mode (Only if explicitly needed) */
+@media (prefers-color-scheme: light) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    --border-color: #374151;
-}
+    --background: #ffffff;
+    --foreground: #171717;
+    --border-color: #d1d5db;
+  }
 }
 
+/* 🔹 Global Body Styles */
 body {
   color: var(--foreground);
   background: var(--background);
@@ -24,7 +27,7 @@ body {
 
 /* 🔹 Button Styles */
 .button {
-  @apply px-6 py-2 font-bold rounded-lg transition;
+  @apply px-6 py-2 font-bold rounded-lg transition text-center;
 }
 
 .button-primary {
@@ -32,20 +35,20 @@ body {
 }
 
 .button-secondary {
-  @apply bg-gray-800 text-white;
+  @apply bg-gray-700 text-white hover:bg-gray-800;
 }
 
 .button-disabled {
-  @apply bg-gray-400 text-white cursor-not-allowed;
+  @apply bg-gray-500 text-white cursor-not-allowed;
 }
 
 /* 🔹 Dropdown Styles */
 .dropdown {
-  @apply absolute mt-2 w-48 bg-black border border-gray-700 rounded-md shadow-lg;
+  @apply absolute mt-2 w-48 bg-gray-900 border border-gray-700 rounded-md shadow-lg;
 }
 
 .dropdown-item {
-  @apply block w-full px-4 py-2 text-left text-white hover:bg-gray-800;
+  @apply block w-full px-4 py-2 text-left text-gray-300 hover:bg-gray-800;
 }
 
 .dropdown-item-danger {
@@ -54,42 +57,39 @@ body {
 
 /* 🔹 Address Box */
 .address-box {
-  @apply mt-4 w-full max-w-xs bg-green-100 text-green-700 p-3 rounded-md text-center;
+  @apply mt-4 w-full max-w-xs bg-gray-800 text-gray-300 p-3 rounded-md text-center shadow-sm border border-gray-600;
 }
 
 /* 🔹 Wallet Connector Container */
 .connector-container {
-  @apply flex flex-col items-center space-y-4 p-4 border border-gray-300 rounded-lg;
+  @apply flex flex-col items-center space-y-6 p-6 bg-gray-900 shadow-lg rounded-lg border border-gray-700;
 }
 
 /* 🔹 Title Styling */
 .connector-title {
-  @apply text-lg font-bold;
+  @apply text-2xl font-bold text-gray-200;
 }
 
-/* 🔹 Form Styling */
+/* 🔹 Form Input */
 .input {
-  @apply w-full px-3 py-2 border rounded-md focus:ring focus:ring-purple-300 focus:outline-none;
+  @apply w-full px-3 py-2 border rounded-md bg-gray-800 text-white placeholder-gray-400 focus:ring focus:ring-purple-500 focus:outline-none;
 }
 
 .input-disabled {
-  @apply w-full px-3 py-2 border rounded-md bg-gray-200 cursor-not-allowed;
+  @apply bg-gray-700 cursor-not-allowed text-gray-400;
 }
 
-/* 🔹 Card Styling (Now Using Site Background) */
+/* 🔹 Card Styling */
 .card {
-  @apply p-4 border rounded-lg shadow-md;
-  background-color: var(--background);
-  border-color: var(--border-color);
+  @apply p-4 border rounded-lg shadow-md text-center bg-gray-800 border-gray-700;
 }
 
-/* 🔹 Stack (Row Layout) */
+/* 🔹 Stack Layout */
 .stack {
-  @apply flex flex-row space-x-2 items-end;
+  @apply flex flex-row space-x-2 items-center;
 }
 
-/* 🔹 Link Styling */
+/* 🔹 Contract Link */
 .contract-link {
-  @apply font-mono text-xs underline;
-  color: var(--foreground);
+  @apply font-mono text-xs underline text-blue-400 hover:text-blue-600;
 }

@@ -2,64 +2,43 @@ import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Link from "next/link";
-
-import { useSorobanReact } from "soroban-react-stellar-wallets-kit";
-import { useRegisteredContract } from "soroban-react-stellar-wallets-kit";
+import { useSorobanReact, useRegisteredContract } from "soroban-react-stellar-wallets-kit";
 import { xdr, nativeToScVal, scValToNative } from "@stellar/stellar-sdk";
 
-type UpdateGreetingValues = { newMessage: string };
-
 export const GreeterContractInteractions = () => {
-  const sorobanContext = useSorobanReact();
-  const { activeNetwork , sorobanServer, address } = sorobanContext;
+  const { activeNetwork, sorobanServer, address } = useSorobanReact();
   const contract = useRegisteredContract("greeting");
-  
-  const [updateIsLoading, setUpdateIsLoading] = useState(false);
-  const { register, handleSubmit } = useForm<UpdateGreetingValues>();
 
+  const [updateIsLoading, setUpdateIsLoading] = useState(false);
+  const { register, handleSubmit } = useForm<{ newMessage: string }>();
   const [fetchedGreeting, setFetchedGreeting] = useState<string | null>(null);
   const [contractAddress, setContractAddress] = useState<string | null>(null);
 
-  /** 🔹 Fetch Greeting from Contract */
+  /** Fetch Greeting */
   const fetchGreeting = useCallback(async () => {
-    console.log("🚀 ~ fetchGreeting ~ sorobanServer:", sorobanServer)
-    console.log("🚀 ~ fetchGreeting ~ contract:", contract)
     if (!sorobanServer || !contract) return;
-    console.log("here again")
-
 
     try {
-      const address = contract?.deploymentInfo?.contractAddress;
-      console.log("🚀 ~ fetchGreeting ~ address:", address)
-      setContractAddress(address);
+      const addr = contract?.deploymentInfo?.contractAddress;
+      setContractAddress(addr);
 
-      const result = await contract?.invoke(
-        { method: "read_title", args: [] });
-      console.log("🚀 ~ fetchGreeting ~ result:", result)
-      if (result) {
-        setFetchedGreeting(scValToNative(result as xdr.ScVal) as string);
-      }
-    } catch (e) {
-      console.error("Error fetching greeting:", e);
-      toast.error("Error while fetching greeting. Try again…");
+      const result = await contract?.invoke({ method: "read_title", args: [] });
+      if (result) setFetchedGreeting(scValToNative(result as xdr.ScVal) as string);
+    } catch {
+      toast.error("Error fetching greeting.");
       setFetchedGreeting(null);
     }
-  }, [sorobanServer, contract, activeNetwork]);
+  }, [sorobanServer, contract]);
 
-  /** 🔹 Fetch greeting when the component mounts or updates */
   useEffect(() => {
     setUpdateIsLoading(true);
     fetchGreeting().finally(() => setUpdateIsLoading(false));
   }, [fetchGreeting]);
 
-  /** 🔹 Update Greeting */
-  const updateGreeting = async ({ newMessage }: UpdateGreetingValues) => {
-    console.log("🚀 ~ updateGreeting ~ newMessage:", newMessage)
-    console.log("🚀 ~ updateGreeting ~ address:", address)
-    console.log("🚀 ~ updateGreeting ~ sorobanServer:", sorobanServer)
-    if (!address) return toast.error("Wallet is not connected. Try again...");
-    if (!sorobanServer) return toast.error("sorobanServer is not defined. Unable to connect to the blockchain");
-    if (!activeNetwork) return toast.error("Wallet not connected. Try again…");
+  /** Update Greeting */
+  const updateGreeting = async ({ newMessage }: { newMessage: string }) => {
+    if (!address) return toast.error("Wallet not connected.");
+    if (!sorobanServer) return toast.error("Soroban server not available.");
 
     setUpdateIsLoading(true);
     try {
@@ -67,69 +46,50 @@ export const GreeterContractInteractions = () => {
         method: "set_title",
         args: [nativeToScVal(newMessage, { type: "string" })],
         signAndSend: true,
-        reconnectAfterTx: false,
       });
 
       if (result) {
-        toast.success("New greeting successfully published!");
-        fetchGreeting(); // Refresh the greeting
+        toast.success("Greeting updated!");
+        fetchGreeting();
       } else {
-        toast.error("Greeting update unsuccessful...");
+        toast.error("Update failed.");
       }
-    } catch (e) {
-      console.error("Error updating greeting:", e);
-      toast.error("Error while sending transaction. Try again…");
+    } catch {
+      toast.error("Transaction failed.");
     } finally {
       setUpdateIsLoading(false);
     }
   };
-  
+
   return (
-    <div className="flex flex-col space-y-4 max-w-[20rem]">
-      <h2 className="text-center">Greeter Smart Contract</h2>
+    <div className="card text-center w-full">
+      <h2 className="text-lg font-semibold">Greeter Smart Contract</h2>
 
       {contractAddress ? (
         <>
-          {/* Greeting Display */}
-          <div className="card">
+          <div className="card mt-4">
             <p className="font-semibold">Fetched Greeting:</p>
-            <p>{fetchedGreeting || "Loading..."}</p>
+            <p className="text-gray-600">{fetchedGreeting || "Loading..."}</p>
           </div>
-
-          {/* Contract Address Link */}
-          <p className="contract-link">
-            <Link href={`https://stellar.expert/explorer/testnet/contract/${contractAddress}`} target="_blank">
-              {contractAddress}
-            </Link>
-          </p>
-
-          
+          <Link href={`https://stellar.expert/explorer/testnet/contract/${contractAddress}`} target="_blank" className="contract-link mt-2 block">
+            {contractAddress}
+          </Link>
         </>
       ) : (
-        <div className="card">Loading Smart Contract...</div>
+        <p className="text-gray-500 mt-2">Loading Smart Contract...</p>
       )}
 
-      {contractAddress && address && 
-      <div className="card">
-      <form onSubmit={handleSubmit(updateGreeting)}>
-        <div className="stack">
-          <div className="flex flex-col">
-            <label className="text-sm font-medium">Update Greeting:</label>
-            <input className="input text-black" disabled={updateIsLoading} {...register("newMessage")} />
-          </div>
-          <button
-            type="submit"
-            className={updateIsLoading ? "button button-disabled" : "button button-primary"}
-            disabled={updateIsLoading}
-          >
+      {contractAddress && address && (
+        <form onSubmit={handleSubmit(updateGreeting)} className="mt-4">
+          <label className="text-sm font-medium">Update Greeting:</label>
+          <input className="input mt-2" disabled={updateIsLoading} {...register("newMessage")} />
+          <button type="submit" disabled={updateIsLoading} className="button button-primary w-full mt-2">
             {updateIsLoading ? "Loading..." : "Submit"}
           </button>
-        </div>
-      </form>
-    </div>
-      }
+        </form>
+      )}
 
-      {activeNetwork && <p className="text-center">Current Chain: {activeNetwork}</p>}
+      {activeNetwork && <p className="text-gray-600 text-sm mt-2">Current Chain: {activeNetwork}</p>}
     </div>
   );
 };
