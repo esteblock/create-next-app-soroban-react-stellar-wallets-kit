@@ -81,7 +81,7 @@ body {
 
 /* 🔹 Card Styling */
 .card {
-  @apply p-4 border rounded-lg shadow-md text-center bg-gray-800 border-gray-700;
+  @apply p-4 border rounded-lg shadow-md text-center bg-gray-800 border-gray-700 text-white;
 }
 
 /* 🔹 Stack Layout */
@@ -92,4 +92,9 @@ body {
 /* 🔹 Contract Link */
 .contract-link {
   @apply font-mono text-xs underline text-blue-400 hover:text-blue-600;
+}
+
+/* 🔹 Green Disconnect Button */
+.button-green {
+  @apply bg-green-600 text-white hover:bg-green-700;
 }

@@ -8,13 +8,13 @@ import { GreeterContractInteractions } from "./components/GreeterContractInterac
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-background text-foreground">
-      <h1 className="connector-title bg-transparent p-2">Wallet Connection</h1>
+      <h1 className="connector-title bg-transparent p-2">Soroban React Stellar Wallets Kit</h1>
 
       <MySorobanReactProvider>
         <div className="connector-container w-full max-w-md">
           <WalletInfo />
-          <ConnectButton />
           <GreeterContractInteractions />
+          <ConnectButton />
         </div>
       </MySorobanReactProvider>
     </div>

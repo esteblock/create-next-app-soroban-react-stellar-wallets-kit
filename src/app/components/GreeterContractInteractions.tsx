@@ -62,34 +62,34 @@ export const GreeterContractInteractions = () => {
   };
 
   return (
-    <div className="card text-center w-full">
-      <h2 className="text-lg font-semibold">Greeter Smart Contract</h2>
+    <div className="card w-full">
+      <h2 className="text-lg font-semibold text-white">Greeter Smart Contract</h2>
 
       {contractAddress ? (
         <>
           <div className="card mt-4">
-            <p className="font-semibold">Fetched Greeting:</p>
-            <p className="text-gray-600">{fetchedGreeting || "Loading..."}</p>
+            <p className="font-semibold text-white">Fetched Greeting:</p>
+            <p className="text-white">{fetchedGreeting || "Loading..."}</p>
           </div>
-          <Link href={`https://stellar.expert/explorer/testnet/contract/${contractAddress}`} target="_blank" className="contract-link mt-2 block">
+          <Link href={`https://stellar.expert/explorer/testnet/contract/${contractAddress}`} target="_blank" className="contract-link mt-2 block text-white">
             {contractAddress}
           </Link>
         </>
       ) : (
-        <p className="text-gray-500 mt-2">Loading Smart Contract...</p>
+        <p className="text-white mt-2">Loading Smart Contract...</p>
       )}
 
       {contractAddress && address && (
         <form onSubmit={handleSubmit(updateGreeting)} className="mt-4">
-          <label className="text-sm font-medium">Update Greeting:</label>
-          <input className="input mt-2" disabled={updateIsLoading} {...register("newMessage")} />
+          <label className="text-sm font-medium text-white">Update Greeting:</label>
+          <input className="input mt-2 text-white" disabled={updateIsLoading} {...register("newMessage")} />
           <button type="submit" disabled={updateIsLoading} className="button button-primary w-full mt-2">
             {updateIsLoading ? "Loading..." : "Submit"}
           </button>
         </form>
       )}
 
-      {activeNetwork && <p className="text-gray-600 text-sm mt-2">Current Chain: {activeNetwork}</p>}
+      {activeNetwork && <p className="text-white text-sm mt-2">Current Chain: {activeNetwork}</p>}
     </div>
   );
 };
