@@ -10,12 +10,12 @@
   },
   "dependencies": {
     "@stellar/stellar-sdk": "^13.1.0",
-    "soroban-react-stellar-wallets-kit": "file:../soroban-react",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
-    "react-hot-toast": "^2.5.2"
+    "react-hot-toast": "^2.5.2",
+    "soroban-react-stellar-wallets-kit": "^0.0.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
