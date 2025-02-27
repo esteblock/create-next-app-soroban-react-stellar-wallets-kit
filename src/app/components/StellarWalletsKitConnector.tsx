@@ -22,6 +22,7 @@ export default function StellarWalletsKitConnector({ walletName }: StellarWallet
   // ✅ Use useRef to store a single instance of StellarWalletsKit
   const kitRef = useRef<StellarWalletsKit | null>(null);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!kitRef.current) {
       kitRef.current = new StellarWalletsKit({
@@ -34,11 +35,15 @@ export default function StellarWalletsKitConnector({ walletName }: StellarWallet
 
   async function handleClick() {
     try {
+      if (!kitRef.current) return;
       await kitRef.current.openModal({
         onWalletSelected: async (option: ISupportedWallet) => {
           kitRef.current?.setWallet(option.id);
-          const { address } = await kitRef.current?.getAddress();
-          setWalletAddress(address);
+          const addressResponse = await kitRef.current?.getAddress();
+          if (addressResponse){
+            const { address } = addressResponse;
+            setWalletAddress(address);
+          }
         },
       });
     } catch (error) {
