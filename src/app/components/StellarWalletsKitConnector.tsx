@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   StellarWalletsKit,
   WalletNetwork,
@@ -16,22 +16,28 @@ interface StellarWalletsKitConnectorProps {
 export default function StellarWalletsKitConnector({ walletName }: StellarWalletsKitConnectorProps) {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
+  
   const currentNetwork = WalletNetwork.TESTNET;
+  
+  // ✅ Use useRef to store a single instance of StellarWalletsKit
+  const kitRef = useRef<StellarWalletsKit | null>(null);
 
-  // ✅ Create an instance of StellarWalletsKit
-  const kit: StellarWalletsKit = new StellarWalletsKit({
-    network: currentNetwork, // Default to TESTNET
-    selectedWalletId: XBULL_ID,
-    modules: allowAllModules(),
-  });
+  useEffect(() => {
+    if (!kitRef.current) {
+      kitRef.current = new StellarWalletsKit({
+        network: currentNetwork,
+        selectedWalletId: XBULL_ID,
+        modules: allowAllModules(),
+      });
+    }
+  }, []);
 
   async function handleClick() {
     try {
-      await kit.openModal({
+      await kitRef.current.openModal({
         onWalletSelected: async (option: ISupportedWallet) => {
-          kit.setWallet(option.id);
-          const { address } = await kit.getAddress();
+          kitRef.current?.setWallet(option.id);
+          const { address } = await kitRef.current?.getAddress();
           setWalletAddress(address);
         },
       });
@@ -39,10 +45,11 @@ export default function StellarWalletsKitConnector({ walletName }: StellarWallet
       console.error(`Error connecting ${walletName}:`, error);
     }
   }
+
   async function handleGetAddressClick() {
     try {
-      const { address } = await kit.getAddress();
-      console.log("🚀 ~ handleGetAddressClick ~ address:", address)
+      if (!kitRef.current) return;
+      const { address } = await kitRef.current.getAddress();
       setWalletAddress(address);
     } catch (error) {
       console.error(`Error getting address:`, error);
@@ -51,7 +58,8 @@ export default function StellarWalletsKitConnector({ walletName }: StellarWallet
 
   async function handleDisconnect() {
     try {
-      await kit.disconnect();
+      if (!kitRef.current) return;
+      await kitRef.current.disconnect();
       setWalletAddress(null);
       setIsMenuOpen(false);
       console.log("Disconnected from wallet.");
@@ -88,8 +96,8 @@ export default function StellarWalletsKitConnector({ walletName }: StellarWallet
             <p className="text-xs break-all">{walletAddress}</p>
           </div>
           <button onClick={handleGetAddressClick} className="button button-primary">
-          Get Address from Wallet Again
-        </button>
+            Get Address from Wallet Again
+          </button>
         </div>
       )}
     </div>
