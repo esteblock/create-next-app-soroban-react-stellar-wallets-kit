@@ -1,3 +1,17 @@
+# Example of soroban-react-stellar-wallets-kit
+
+Library: **soroban-react-stellar-wallets-kit:** https://www.npmjs.com/package/soroban-react-stellar-wallets-kit
+Library Repo: https://github.com/paltalabs/soroban-react-stellar-wallets-kit
+
+Example Dapp Repo: https://github.com/esteblock/create-next-app-soroban-react-stellar-wallets-kit/
+Deployment of Example Dapp Repo: https://create-next-app-soroban-react-stellar-wallets-kit.vercel.app/
+
+# Comparison:
+If you want to compare the usage of stellar-wallets-kit with the deprecated @soroban-react
+Please check the `feat/compare-stellar-wallets-kit-soroban-react` branch: https://github.com/esteblock/create-next-app-soroban-react-stellar-wallets-kit/tree/feat/compare-stellar-wallets-kit-soroban-react
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
